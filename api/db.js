@@ -1,17 +1,19 @@
-require('dotenv').config();
-const { Sequelize } = require('sequelize');
-const fs = require('fs');
-const path = require('path');
+require("dotenv").config();
+const { Sequelize } = require("sequelize");
+const fs = require("fs");
+const path = require("path");
 const { DB_USER, DB_PASSWORD, DB_HOST, DB_PORT } = process.env;
 
-const UserModel = require('./src/models/User');
-const MessageModel = require('./src/models/Message');
+const UserModel = require("./src/models/User");
+const MessageModel = require("./src/models/Message");
 
-
-const sequelize = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/trends`, {
-  logging: false,
-  native: false
-});
+const sequelize = new Sequelize(
+	`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/trends`,
+	{
+		logging: false,
+		native: false,
+	}
+);
 
 // const basename = path.basename(__filename);
 
@@ -31,15 +33,14 @@ const sequelize = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}
 // let capsEntries = entries.map((entry) => [entry[0][0].toUpperCase() + entry[0].slice(1), entry[1]]);
 // sequelize.models = Object.fromEntries(capsEntries);
 
-
 UserModel(sequelize);
 MessageModel(sequelize);
-console.log(sequelize.models)
+console.log("ACA MOSDELS", sequelize.models);
 const { User, Message } = sequelize.models;
 
-Message.belongsTo(User, { foreignKey: 'user_id', allowNull: false });
+Message.belongsTo(User, { foreignKey: "user_id", allowNull: false });
 
 module.exports = {
-  ...sequelize.models,
-  conn: sequelize,
+	...sequelize.models,
+	conn: sequelize,
 };
